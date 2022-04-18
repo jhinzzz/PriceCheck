@@ -27,4 +27,4 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: run main.py
-        run: python ./main.py
+      - run: python ./main.py
