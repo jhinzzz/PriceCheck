@@ -40,7 +40,7 @@ jobs:
       # 发送邮件
       - name: send_email
         # 只有当上面失败时才运行发送邮件
-        if: $ {{ failure() }}
+        if: failure()
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
