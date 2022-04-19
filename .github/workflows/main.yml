@@ -46,9 +46,9 @@ jobs:
           username: ${{ secrets.MAIL_ACCOUNT }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: Orders error
-          to: ${{ secrets.MAIL_ACCOUNT }}
+          to: ${{ secrets.MAIL_ADDRESS }}
           # Required sender full name (address can be skipped):
-          from: ${{ secrets.MAIL_ACCOUNT }}
+          from: ${{ secrets.MAIL_ADDRESS }}
           secure: true
           body: We have some wrong orders.
           # attachments: ./errorResult/error.csv
