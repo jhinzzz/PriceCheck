@@ -41,7 +41,7 @@ jobs:
       - name: send_email
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: smtp.outlook365.com
+          server_address: smtp.office365.com
           server_port: 465
           username: ${{ secrets.MAIL_ACCOUNT }}
           password: ${{ secrets.MAIL_PASSWORD }}
