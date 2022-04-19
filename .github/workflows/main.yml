@@ -51,5 +51,5 @@ jobs:
           from: ${{ secrets.MAIL_ADDRESS }}
           secure: true
           body: We have some wrong orders.
-          # attachments: ./errorResult/error.csv
+          attachments: ./errorResult/error.csv
           priority: high
