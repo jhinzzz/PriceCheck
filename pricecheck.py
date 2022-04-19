@@ -2,15 +2,14 @@
 
 """
 @Time   :2022/4/15
-@Update :
 @Author :evan.fang
 @File   :pricecheck.py
 @Desc   :进行订单金额对比
 """
 
-from datetime import date, timedelta
-
 import requests
+from GetError import write_csv
+from datetime import date, timedelta
 
 day_interval = 1
 check_days = []
@@ -25,27 +24,36 @@ sg_headers = {"X-Spree-Token": "ba996565c969301070f4f472b5bb684be59f79818ea86586
 
 
 class PriceCheck(object):
-
     order_count = 0
     error_count = 0
+    errors = []
 
     def get_days(self):
+        # 根据datetime来计算这几天的日期
         for i in range(day_interval):
             check_days.append(str(date.today() - timedelta(days=i)))
         print("check %s completed orders" % check_days)
+        # 根据列表内的日期进行price_check
+        # AU
         for days in check_days:
             url = au_url + days
             self.get_orders("au", requests.get(url=url, headers=au_headers).json())
+        # US
         for days in check_days:
             url = us_url + days
             self.get_orders("us", requests.get(url=url, headers=us_headers).json())
-
+        # SG
         for days in check_days:
             url = sg_url + days
             self.get_orders("sg", requests.get(url=url, headers=sg_headers).json())
 
         print("total orders count: %s" % self.order_count)
         print("error orders count: %s" % self.error_count)
+        # 如果存在错误订单，则触发写csv
+        if self.error_count > 0:
+            write_csv(self.errors)
+            # 抛出异常，由actions发邮件
+            raise AssertionError('error orders not equals to 0')
 
     def get_orders(self, nation, response):
         try:
@@ -77,7 +85,11 @@ class PriceCheck(object):
             requests.get(url=u, headers=header).raise_for_status()
         except requests.exceptions.HTTPError as e:
             print("404:", e)
+            # 将错误订单和国家塞入errors
+            self.errors.append([nation, number])
+            # 错误订单数+1
             self.error_count += 1
+            # 不再进行下一步
             return False
         else:
             r = requests.get(url=u, headers=header).json()
@@ -99,6 +111,9 @@ class PriceCheck(object):
             return True
         else:
             print("%s-%s: %s is not equal to %s" % (nation, number, total_price, r['amount_total']))
+            # 价格不对，将错误订单压入errors
+            self.errors.append([nation, number])
+            # 错误订单数+1
             self.error_count += 1
             return False
 
