@@ -30,7 +30,7 @@ class PriceCheck(object):
 
     def get_days(self):
         # 根据datetime来计算这几天的日期
-        for i in range(day_interval):
+        for i in range(1, day_interval+1):
             check_days.append(str(date.today() - timedelta(days=i)))
         print("check %s completed orders" % check_days)
         # 根据列表内的日期进行price_check
@@ -162,3 +162,7 @@ class PriceCheck(object):
 
 
 pc = PriceCheck()
+
+if __name__ == '__main__':
+    for i in range(1, day_interval+1):
+        print(i)
