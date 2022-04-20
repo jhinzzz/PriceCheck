@@ -19,7 +19,7 @@ us_url = "https://knight.castlery.co/spree/api/orders?q[state_eq]=complete&q[com
 sg_url = "https://knight.castlery.sg/spree/api/orders?q[state_eq]=complete&q[completed_at_gteq]="
 
 au_headers = {"X-Spree-Token": "2d5e70fe4f8935043528e72b6d95e420033bbaa997db620a"}
-us_headers = {"X-Spree-Token": "4d62268acb6481775b01946959470c4bfdc3c4711e35c79f"}
+us_headers = {"X-Spree-Token": "267f99faef8d339b1345f0d99dbd4c0b7628c5bd2315cedd"}
 sg_headers = {"X-Spree-Token": "ba996565c969301070f4f472b5bb684be59f79818ea86586"}
 
 
