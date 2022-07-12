@@ -138,6 +138,11 @@ class PriceCheck(object):
             requests.get(url=u, headers=header).raise_for_status()
         except requests.exceptions.HTTPError as e:
             print("404:", e)
+            # 将错误订单和国家塞入errors
+            self.errors.append([nation, number])
+            # 错误订单数+1
+            self.error_count += 1
+            # 不再进行下一步
             return False
         else:
             r = requests.get(url=u, headers=header).json()
@@ -154,9 +159,8 @@ class PriceCheck(object):
         total_price = float('%.2f' % total_price)  # 精度转换
         tax_price = float('%.2f' % tax_price)  # 精度转换
 
-        print(total_price)
         if total_price == r['amount_total'] and tax_price == r['tax_amount_total']:
-            print('pass')
+            # print('pass')
             return True
         else:
             print("%s-%s: %s is not equal to %s" % (nation, number, total_price, r['amount_total']))
